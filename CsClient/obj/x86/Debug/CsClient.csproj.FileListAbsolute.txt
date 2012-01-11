@@ -1,0 +1,52 @@
+C:\Blazej\Studia\komunikacja czlowiek-komputer\Agent Zelowy Mis\AgentZelowychMisi\CsClient\bin\Debug\CsClient.exe.manifest
+C:\Blazej\Studia\komunikacja czlowiek-komputer\Agent Zelowy Mis\AgentZelowychMisi\CsClient\bin\Debug\CsClient.application
+C:\Blazej\Studia\komunikacja czlowiek-komputer\Agent Zelowy Mis\AgentZelowychMisi\CsClient\bin\Debug\CsClient.exe
+C:\Blazej\Studia\komunikacja czlowiek-komputer\Agent Zelowy Mis\AgentZelowychMisi\CsClient\bin\Debug\CsClient.pdb
+C:\Blazej\Studia\komunikacja czlowiek-komputer\Agent Zelowy Mis\AgentZelowychMisi\CsClient\bin\Debug\ClientCS.dll
+C:\Blazej\Studia\komunikacja czlowiek-komputer\Agent Zelowy Mis\AgentZelowychMisi\CsClient\bin\Debug\Data.dll
+C:\Blazej\Studia\komunikacja czlowiek-komputer\Agent Zelowy Mis\AgentZelowychMisi\CsClient\bin\Debug\RelativeObjects.dll
+C:\Blazej\Studia\komunikacja czlowiek-komputer\Agent Zelowy Mis\AgentZelowychMisi\CsClient\bin\Debug\World.dll
+C:\Blazej\Studia\komunikacja czlowiek-komputer\Agent Zelowy Mis\AgentZelowychMisi\CsClient\bin\Debug\Communication.dll
+C:\Blazej\Studia\komunikacja czlowiek-komputer\Agent Zelowy Mis\AgentZelowychMisi\CsClient\bin\Debug\Npgsql.dll
+C:\Blazej\Studia\komunikacja czlowiek-komputer\Agent Zelowy Mis\AgentZelowychMisi\CsClient\bin\Debug\Google.ProtocolBuffers.dll
+C:\Blazej\Studia\komunikacja czlowiek-komputer\Agent Zelowy Mis\AgentZelowychMisi\CsClient\bin\Debug\Mono.Security.dll
+C:\Blazej\Studia\komunikacja czlowiek-komputer\Agent Zelowy Mis\AgentZelowychMisi\CsClient\bin\Debug\ClientCS.pdb
+C:\Blazej\Studia\komunikacja czlowiek-komputer\Agent Zelowy Mis\AgentZelowychMisi\CsClient\bin\Debug\Data.pdb
+C:\Blazej\Studia\komunikacja czlowiek-komputer\Agent Zelowy Mis\AgentZelowychMisi\CsClient\bin\Debug\RelativeObjects.pdb
+C:\Blazej\Studia\komunikacja czlowiek-komputer\Agent Zelowy Mis\AgentZelowychMisi\CsClient\bin\Debug\World.pdb
+C:\Blazej\Studia\komunikacja czlowiek-komputer\Agent Zelowy Mis\AgentZelowychMisi\CsClient\bin\Debug\Communication.pdb
+C:\Blazej\Studia\komunikacja czlowiek-komputer\Agent Zelowy Mis\AgentZelowychMisi\CsClient\bin\Debug\Npgsql.pdb
+C:\Blazej\Studia\komunikacja czlowiek-komputer\Agent Zelowy Mis\AgentZelowychMisi\CsClient\bin\Debug\Npgsql.xml
+C:\Blazej\Studia\komunikacja czlowiek-komputer\Agent Zelowy Mis\AgentZelowychMisi\CsClient\bin\Debug\Google.ProtocolBuffers.xml
+C:\Blazej\Studia\komunikacja czlowiek-komputer\Agent Zelowy Mis\AgentZelowychMisi\CsClient\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Blazej\Studia\komunikacja czlowiek-komputer\Agent Zelowy Mis\AgentZelowychMisi\CsClient\obj\x86\Debug\CsClient.exe.manifest
+C:\Blazej\Studia\komunikacja czlowiek-komputer\Agent Zelowy Mis\AgentZelowychMisi\CsClient\obj\x86\Debug\CsClient.application
+C:\Blazej\Studia\komunikacja czlowiek-komputer\Agent Zelowy Mis\AgentZelowychMisi\CsClient\obj\x86\Debug\CsClient.exe
+C:\Blazej\Studia\komunikacja czlowiek-komputer\Agent Zelowy Mis\AgentZelowychMisi\CsClient\obj\x86\Debug\CsClient.pdb
+C:\Blazej\Studia\komunikacja czlowiek-komputer\Agent Zelowy Mis\AgentZelowychMisi\CsClient\bin\Debug\AIMLBot.dll
+D:\UCZELNIA\KCK\AgentZelowychMisi\CsClient\obj\x86\Debug\ResolveAssemblyReference.cache
+D:\UCZELNIA\KCK\AgentZelowychMisi\CsClient\bin\Debug\CsClient.exe.manifest
+D:\UCZELNIA\KCK\AgentZelowychMisi\CsClient\bin\Debug\CsClient.application
+D:\UCZELNIA\KCK\AgentZelowychMisi\CsClient\bin\Debug\CsClient.exe
+D:\UCZELNIA\KCK\AgentZelowychMisi\CsClient\bin\Debug\CsClient.pdb
+D:\UCZELNIA\KCK\AgentZelowychMisi\CsClient\bin\Debug\AIMLBot.dll
+D:\UCZELNIA\KCK\AgentZelowychMisi\CsClient\bin\Debug\ClientCS.dll
+D:\UCZELNIA\KCK\AgentZelowychMisi\CsClient\bin\Debug\Data.dll
+D:\UCZELNIA\KCK\AgentZelowychMisi\CsClient\bin\Debug\RelativeObjects.dll
+D:\UCZELNIA\KCK\AgentZelowychMisi\CsClient\bin\Debug\World.dll
+D:\UCZELNIA\KCK\AgentZelowychMisi\CsClient\bin\Debug\Communication.dll
+D:\UCZELNIA\KCK\AgentZelowychMisi\CsClient\bin\Debug\Npgsql.dll
+D:\UCZELNIA\KCK\AgentZelowychMisi\CsClient\bin\Debug\Google.ProtocolBuffers.dll
+D:\UCZELNIA\KCK\AgentZelowychMisi\CsClient\bin\Debug\Mono.Security.dll
+D:\UCZELNIA\KCK\AgentZelowychMisi\CsClient\bin\Debug\ClientCS.pdb
+D:\UCZELNIA\KCK\AgentZelowychMisi\CsClient\bin\Debug\Data.pdb
+D:\UCZELNIA\KCK\AgentZelowychMisi\CsClient\bin\Debug\RelativeObjects.pdb
+D:\UCZELNIA\KCK\AgentZelowychMisi\CsClient\bin\Debug\World.pdb
+D:\UCZELNIA\KCK\AgentZelowychMisi\CsClient\bin\Debug\Communication.pdb
+D:\UCZELNIA\KCK\AgentZelowychMisi\CsClient\bin\Debug\Npgsql.pdb
+D:\UCZELNIA\KCK\AgentZelowychMisi\CsClient\bin\Debug\Npgsql.xml
+D:\UCZELNIA\KCK\AgentZelowychMisi\CsClient\bin\Debug\Google.ProtocolBuffers.xml
+D:\UCZELNIA\KCK\AgentZelowychMisi\CsClient\obj\x86\Debug\CsClient.exe.manifest
+D:\UCZELNIA\KCK\AgentZelowychMisi\CsClient\obj\x86\Debug\CsClient.application
+D:\UCZELNIA\KCK\AgentZelowychMisi\CsClient\obj\x86\Debug\CsClient.exe
+D:\UCZELNIA\KCK\AgentZelowychMisi\CsClient\obj\x86\Debug\CsClient.pdb
