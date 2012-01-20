@@ -4,16 +4,11 @@ using Data;
 using AIMLBot;
 using System.Collections.Generic;
 
-        /*
-         * Struktura pomocnicza oznaczająca jedno pole w pamiętanej mapie
-         */
-        
-
 namespace CsClient
 {
     public class Program
     {
-        
+
 
         static AgentAPI agentTomek;
         static int energy;
@@ -23,33 +18,24 @@ namespace CsClient
         static List<MapPoint> punkty = new List<MapPoint>();
         static bool jestX = false;
         static bool jestY = false;
+        static List<Wiadomosc> wiadomosci = new List<Wiadomosc>();
         /*
          * Nowe zmienne dotyczące obecne
          * j pozycji agenta
          */
-        static int positionX=0;//sufit z rozmiar mapy/2, żeby agent po pojawieniu się znajdował się na środku swojej mapy
-        static int positionY=0;
-        static int rotation=0;    
+        static int positionX = 0;//sufit z rozmiar mapy/2, żeby agent po pojawieniu się znajdował się na środku swojej mapy
+        static int positionY = 0;
+        static int rotation = 0;
 
-        static void Listen(String a, String s) {
-             if(a == "superktos") Console.WriteLine("~Słysze własne słowa~");
-             Console.WriteLine(a + " krzyczy " + s);
-             if (a == imie+".ZeloweMisie")
-             {
-                 Console.WriteLine("To mówię ja, " + imie);
+        static void Listen(String a, String s)
+        {
+            if (a == "superktos") Console.WriteLine("~Słysze własne słowa~");
+            Console.WriteLine(a + " krzyczy " + s);
+            wiadomosci.Add(new Wiadomosc(a, s));
 
-             }
-             else
-             {
-                 Console.WriteLine("Powiedział ktoś inny");
-                 if (!agentTomek.Speak("Odpowiadam", 1))
-                     Console.WriteLine("Mowienie nie powiodlo sie - brak energii");
-                 else
-                     energy -= cennikSwiata.speakCost;
-                 
-             }
-             }
-        
+
+        }
+
         static void Main(string[] args)
         {
             /* 
@@ -58,38 +44,38 @@ namespace CsClient
             Console.WriteLine("0 - atlantyda.vm, 1 - localhost");
             String ktory = Console.ReadLine();
             int liczba = Int32.Parse(ktory);
-            
+
             while (true)
             {
-                    agentTomek = new AgentAPI(Listen);
+                agentTomek = new AgentAPI(Listen);
 
                 String ip = Settings.serverIP;
                 String groupname = Settings.groupname;
                 String grouppass = Settings.grouppass;
 
 
-                    Console.Write("Podaj IP serwera: ");
-                    if (liczba == 0) ip = "atlantyda.vm.wmi.amu.edu.pl";
-                    else ip = "localhost";
+                Console.Write("Podaj IP serwera: ");
+                if (liczba == 0) ip = "atlantyda.vm.wmi.amu.edu.pl";
+                else ip = "localhost";
 
-                    Console.Write("Podaj nazwe druzyny: ");
-                    groupname = "ZeloweMisie";
+                Console.Write("Podaj nazwe druzyny: ");
+                groupname = "ZeloweMisie";
 
-                    Console.Write("Podaj haslo: ");
-                    if (liczba == 0) grouppass = "wrggke";
-                    else grouppass = "vkbhrt";
+                Console.Write("Podaj haslo: ");
+                if (liczba == 0) grouppass = "wrggke";
+                else grouppass = "vkbhrt";
 
 
                 Console.Write("Podaj nazwe swiata: ");
                 String worldname = Console.ReadLine();
-                    
-                Console.Write("Podaj imie: ");    
+
+                Console.Write("Podaj imie: ");
                 imie = Console.ReadLine();
 
-           
-            
+
+
                 try
-                {   
+                {
                     cennikSwiata = agentTomek.Connect(ip, 6008, groupname, grouppass, worldname, imie);
                     Console.WriteLine(cennikSwiata.initialEnergy + " - Maksymalna energia");
                     Console.WriteLine(cennikSwiata.maxRecharge + " - Maksymalne doładowanie");
@@ -119,12 +105,15 @@ namespace CsClient
                 }
             }
         }
-        
-        static void KeyReader() {
+
+        static void KeyReader()
+        {
             bool loop = true;
-            while(loop) {
+            while (loop)
+            {
                 Console.WriteLine("Moja energia: " + energy);
-                switch(Console.ReadKey().Key) {
+                switch (Console.ReadKey().Key)
+                {
                     case ConsoleKey.Spacebar: Look();
                         break;
                     case ConsoleKey.R: Recharge();
@@ -143,8 +132,6 @@ namespace CsClient
                         break;
                     case ConsoleKey.D: agentTomek.Disconnect();
                         break;
-                    case ConsoleKey.Z: tekstAIML(Console.ReadLine());
-                        break;
                     case ConsoleKey.F: znanePunkty();
                         break;
                     default: Console.Beep();
@@ -155,11 +142,14 @@ namespace CsClient
 
         private static void Running()
         {
-            while (true) {
-                SearchingEnergy(); //do odkomentowania przy testach
+            while (true)
+            {
+                //  SearchingEnergy(); //do odkomentowania przy testach
+                autoOdpowiedz();
                 StepForward();
                 Recharge();
-                if (!agentTomek.StepForward()) {
+                if (!agentTomek.StepForward())
+                {
                     RotateRight();
                 }
                 System.Threading.Thread.Sleep(2000);
@@ -173,8 +163,8 @@ namespace CsClient
         private static void SearchingEnergy()
         {
             OrientedField[] pola = agentTomek.Look();
-            int x=0;
-            int y=0;
+            int x = 0;
+            int y = 0;
             foreach (OrientedField pole in pola)
             {
                 if (pole.energy != 0)
@@ -238,19 +228,19 @@ namespace CsClient
 
         /**
          * Metoda odnajdująca najbliższe źródło energii na znanej mapie
-         */ 
+         */
         private static int[] FindEnergy()
         {
-            int distance=10000;
-            int closestX=positionX;
-            int closestY=positionY;
+            int distance = 10000;
+            int closestX = positionX;
+            int closestY = positionY;
             int tempDistance;
             foreach (MapPoint pole in punkty)
             {
                 if (pole.energy != 0)
                 {
-                    tempDistance=Math.Abs(pole.x - positionX)+Math.Abs(pole.y - positionY);
-                    if ((tempDistance<distance))
+                    tempDistance = Math.Abs(pole.x - positionX) + Math.Abs(pole.y - positionY);
+                    if ((tempDistance < distance))
                     {
                         closestX = pole.x;
                         closestY = pole.y;
@@ -258,16 +248,16 @@ namespace CsClient
                     }
                 }
             }
-            return new int[] {closestX, closestY};
+            return new int[] { closestX, closestY };
         }
 
         /*
          * zmienia obrót na żądaną ćwiartkę i uruchamia odpowiednią wersję algorytmu przejścia do niego
          * Na przykład zero to ćwiartka pomiędzy 0 i 1.
-         */ 
+         */
         private static void fixRotation(int wanted, int[] point)
         {
-            switch(wanted)
+            switch (wanted)
             {
                 case 0:
                     switch (rotation)
@@ -345,12 +335,12 @@ namespace CsClient
                             break;
                     }
                     break;
-             }
+            }
         }
 
         /**
          * Metoda Rozpoczynająca przejście agenta w kierunku podanego pola. Na podstawie koordynatów własnych oraz celu rozpoznaje w której ćwiartce się on znajduje
-         */ 
+         */
         private static void goToPoint(int[] point)
         {
             if (positionX - point[0] <= 0)
@@ -370,7 +360,7 @@ namespace CsClient
          */
         private static void goForwardRight(int[] point, int isInversed)
         {
-            for (int i = 0; i < Math.Abs(point[0+isInversed]); i++)
+            for (int i = 0; i < Math.Abs(point[0 + isInversed]); i++)
             {
                 if (!agentTomek.StepForward())
                 {
@@ -381,7 +371,7 @@ namespace CsClient
                 }
             }
             RotateRight();
-            for (int j = 0; j < Math.Abs(point[1-isInversed]); j++)
+            for (int j = 0; j < Math.Abs(point[1 - isInversed]); j++)
             {
                 if (!agentTomek.StepForward())
                 {
@@ -397,7 +387,7 @@ namespace CsClient
          */
         private static void goForwardLeft(int[] point, int isInversed)
         {
-            for (int i = 0; i < Math.Abs(point[0+isInversed]); i++)
+            for (int i = 0; i < Math.Abs(point[0 + isInversed]); i++)
             {
                 if (!agentTomek.StepForward())
                 {
@@ -408,7 +398,7 @@ namespace CsClient
                 }
             }
             RotateLeft();
-            for (int j = 0; j < Math.Abs(point[1-isInversed]); j++)
+            for (int j = 0; j < Math.Abs(point[1 - isInversed]); j++)
             {
                 if (!agentTomek.StepForward())
                 {
@@ -427,15 +417,13 @@ namespace CsClient
             int added = agentTomek.Recharge();
             energy += added;
             Console.WriteLine("Otrzymano " + added + " energii");
-            cResponse reply = myBot.chat("Jakas wiadomosc", "Default");
-            Console.WriteLine(reply.getOutput());
+            
         }
 
         private static void Speak()
         {
-            cResponse reply = myBot.chat("Jakas wiadomosc", "Default");
-          //  Console.WriteLine(reply.getOutput());
-            if (!agentTomek.Speak(reply.getOutput(), 1))
+            
+            if (!agentTomek.Speak(Console.ReadLine(), 1))
                 Console.WriteLine("Mowienie nie powiodlo sie - brak energii");
             else
                 energy -= cennikSwiata.speakCost;
@@ -451,7 +439,7 @@ namespace CsClient
                 /*
                  * uaktualnianie obrotu agenta na mapie
                  */
-                rotation = (rotation+3) % 4;
+                rotation = (rotation + 3) % 4;
             }
             Console.WriteLine("Moj obrot to " + rotation);
             Look();
@@ -499,7 +487,7 @@ namespace CsClient
                         positionX--;
                         break;
                 }
-                
+
             }
             Look();
         }
@@ -511,9 +499,10 @@ namespace CsClient
             {
                 Console.WriteLine("-----------------------------");
                 Console.WriteLine("POLE " + pole.x + "," + pole.y);
-                switch (rotation) {
+                switch (rotation)
+                {
                     case 0:
-                        Console.WriteLine("A na liscie: ["+ (positionX + pole.x)+", "+(positionY + pole.y)+"]");
+                        Console.WriteLine("A na liscie: [" + (positionX + pole.x) + ", " + (positionY + pole.y) + "]");
                         break;
                     case 1:
                         Console.WriteLine("A na liscie: [" + (positionX + pole.y) + ", " + (positionY - pole.x) + "]");
@@ -532,10 +521,10 @@ namespace CsClient
                     Console.WriteLine("Przeszkoda");
                 if (pole.agent != null)
                     Console.WriteLine("Agent " + pole.agent.fullName + " i jest obrocony na " + pole.agent.direction.ToString());
-                             
-                  //  punkty.Add(new MapPoint(pole.x, pole.y, false, pole.height, pole.obstacle, pole.energy));
-                    Console.WriteLine("Znam juz " + punkty.Count + " punktow");
-                
+
+                //  punkty.Add(new MapPoint(pole.x, pole.y, false, pole.height, pole.obstacle, pole.energy));
+                Console.WriteLine("Znam juz " + punkty.Count + " punktow");
+
                 Console.WriteLine("-----------------------------");
 
                 # region Saving info to map
@@ -544,15 +533,15 @@ namespace CsClient
                  */
                 switch (rotation)
                 {
-                        
+
                     case 0:
-                    /*    map[positionX + pole.x, positionY + pole.y].known = true;
-                        map[positionX + pole.x, positionY + pole.y].height = pole.height;
-                        map[positionX + pole.x, positionY + pole.y].obstacle = pole.obstacle;
-                        map[positionX + pole.x, positionY + pole.y].energy = pole.energy;*/
+                        /*    map[positionX + pole.x, positionY + pole.y].known = true;
+                            map[positionX + pole.x, positionY + pole.y].height = pole.height;
+                            map[positionX + pole.x, positionY + pole.y].obstacle = pole.obstacle;
+                            map[positionX + pole.x, positionY + pole.y].energy = pole.energy;*/
                         jestX = punkty.Exists(oElement => oElement.x.Equals(positionX + pole.x));
                         jestY = punkty.Exists(oElement => oElement.y.Equals(positionY + pole.y));
-                        if (jestX && jestY) {}
+                        if (jestX && jestY) { }
                         else
                             if (pole.energy == 0)
                             {
@@ -564,10 +553,10 @@ namespace CsClient
                             }
                         break;
                     case 1:
-                    
+
                         jestX = punkty.Exists(oElement => oElement.x.Equals(positionX + pole.y));
                         jestY = punkty.Exists(oElement => oElement.y.Equals(positionY - pole.x));
-                        
+
                         if (jestX && jestY) { }
                         else
                             if (pole.energy == 0)
@@ -580,7 +569,7 @@ namespace CsClient
                             }
                         break;
                     case 2:
-                    
+
                         jestX = punkty.Exists(oElement => oElement.x.Equals(positionX - pole.x));
                         jestY = punkty.Exists(oElement => oElement.y.Equals(positionY + pole.y));
                         //if (jestX && jestY) {} else punkty.Add(new MapPoint(positionX - pole.x, positionY + pole.y, false, pole.height, pole.obstacle, pole.energy));
@@ -596,7 +585,7 @@ namespace CsClient
                             }
                         break;
                     case 3:
-                   
+
                         jestX = punkty.Exists(oElement => oElement.x.Equals(positionX - pole.y));
                         jestY = punkty.Exists(oElement => oElement.y.Equals(positionY + pole.x));
                         //if (jestX && jestY) {} else punkty.Add(new MapPoint(positionX - pole.y, positionY + pole.x, false, pole.height, pole.obstacle, pole.energy));
@@ -613,22 +602,15 @@ namespace CsClient
                         break;
                 }
 
-               
+
             }
                 #endregion
         }
-
-        private static void tekstAIML(String wiadomosc)
+        /*
+         *  Metoda wyświetlająca informacje o punktach, które dostrzegł Agent.
+         */
+    private static void znanePunkty()
         {
-            cResponse reply = myBot.chat(wiadomosc, "Default");
-            Console.WriteLine(reply.getOutput());
-            if (!agentTomek.Speak(reply.getOutput(), 1))
-             Console.WriteLine("Mowienie nie powiodlo sie - brak energii");
-            else
-                energy -= cennikSwiata.speakCost;
-
-        }
-        private static void znanePunkty(){
             foreach (MapPoint poi in punkty)
             {
                 Console.WriteLine("---------");
@@ -638,10 +620,53 @@ namespace CsClient
                 if (!poi.obstacle) Console.WriteLine("Wysokosc: " + poi.height);
                 else Console.WriteLine("Przeszkoda");
                 if (poi.energy > 0) Console.WriteLine("Zrodlo energii: " + poi.energy);
-                
-            }
-                
+
             }
 
+        }
+
+        /*
+         * Metoda odpowiadająca za automatyczne odpowiadanie na komunikat.
+         * Gdy w Listen() agent otrzyma wiadomość postaci: "<Nazwa Agenta> krzyczy <treść komunikatu>"
+         * zostaje on dodany do Listy wiadomości, a następnie wykonaniem każdego ruchu agent
+         * odpowiada na wiadomości i usuwa je z listy.
+         */
+    private static void autoOdpowiedz()
+        {
+            for (int i = 0; i < wiadomosci.Count; i++)
+            {
+                if (wiadomosci[i].author == imie + ".ZeloweMisie")
+                {
+                    Console.WriteLine("Nie będę przeca gadać sam ze sobą");
+                    wiadomosci.RemoveAt(i);
+                }
+                else if (wiadomosci[i].author.Contains("ZeloweMisie"))
+                {
+                    cResponse reply = myBot.chat(wiadomosci[i].komunikat, "Default");
+                    Console.WriteLine("Teraz napisze: " + reply.getOutput());
+
+                    if (!agentTomek.Speak(reply.getOutput(), 1))
+                        Console.WriteLine("Mowienie nie powiodlo sie - brak energii");
+                    else
+                        energy -= cennikSwiata.speakCost;
+                    wiadomosci[i].odpowiedzialem = true;
+                }
+                else
+                {
+                    cResponse reply = myBot.chat("I tak sie nie dogadamy. Poza tym, nie chce mi sie z toba gadac", "Default");
+                    Console.WriteLine("Teraz napisze: " + reply.getOutput());
+
+                    if (!agentTomek.Speak(reply.getOutput(), 1))
+                        Console.WriteLine("Mowienie nie powiodlo sie - brak energii");
+                    else
+                        energy -= cennikSwiata.speakCost;
+                    wiadomosci[i].odpowiedzialem = true;
+                }
+            }       
+        }
+
+                
+            // KONIEC KLASY I W OGÓLE WSZYSTKIEGO. PROSZĘ O NIE DODAWANIE NIC PONIŻEJ TEJ LINIJKI :P
+        
     }
 }
