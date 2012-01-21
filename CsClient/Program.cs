@@ -33,7 +33,6 @@ namespace CsClient
             Console.WriteLine(a + " krzyczy " + s);
             wiadomosci.Add(new Wiadomosc(a, s));
 
-
         }
 
         static void Main(string[] args)
@@ -53,26 +52,17 @@ namespace CsClient
                 String groupname = Settings.groupname;
                 String grouppass = Settings.grouppass;
 
-
-                Console.Write("Podaj IP serwera: ");
                 if (liczba == 0) ip = "atlantyda.vm.wmi.amu.edu.pl";
                 else ip = "localhost";
-
-                Console.Write("Podaj nazwe druzyny: ");
                 groupname = "ZeloweMisie";
-
-                Console.Write("Podaj haslo: ");
                 if (liczba == 0) grouppass = "wrggke";
                 else grouppass = "vkbhrt";
-
 
                 Console.Write("Podaj nazwe swiata: ");
                 String worldname = Console.ReadLine();
 
                 Console.Write("Podaj imie: ");
                 imie = Console.ReadLine();
-
-
 
                 try
                 {
@@ -119,6 +109,10 @@ namespace CsClient
                     case ConsoleKey.R: Recharge();
                         break;
                     case ConsoleKey.I: Running();
+                        break;
+                    case ConsoleKey.A: autoOdpowiedz();
+                        break;
+                    case ConsoleKey.L: listaWiadomosci();
                         break;
                     case ConsoleKey.UpArrow: StepForward();
                         break;
@@ -609,7 +603,7 @@ namespace CsClient
         /*
          *  Metoda wyświetlająca informacje o punktach, które dostrzegł Agent.
          */
-    private static void znanePunkty()
+        private static void znanePunkty()
         {
             foreach (MapPoint poi in punkty)
             {
@@ -631,7 +625,7 @@ namespace CsClient
          * zostaje on dodany do Listy wiadomości, a następnie wykonaniem każdego ruchu agent
          * odpowiada na wiadomości i usuwa je z listy.
          */
-    private static void autoOdpowiedz()
+        private static void autoOdpowiedz()
         {
             for (int i = 0; i < wiadomosci.Count; i++)
             {
@@ -665,6 +659,13 @@ namespace CsClient
             }       
         }
 
+        private static void listaWiadomosci()
+        {
+            for (int i = 0; i < wiadomosci.Count; i++)
+            {
+                Console.WriteLine("Agent: " + wiadomosci[i].author + "\n powiedzial: " + wiadomosci[i].komunikat);
+            }
+        }
                 
             // KONIEC KLASY I W OGÓLE WSZYSTKIEGO. PROSZĘ O NIE DODAWANIE NIC PONIŻEJ TEJ LINIJKI :P
         
