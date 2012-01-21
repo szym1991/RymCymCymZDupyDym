@@ -16,8 +16,7 @@ namespace CsClient
         static cBot myBot = new cBot(false);
         static string imie;
         static List<MapPoint> punkty = new List<MapPoint>();
-        static bool jestX = false;
-        static bool jestY = false;
+        static bool jestXY = false;
         static List<Wiadomosc> wiadomosci = new List<Wiadomosc>();
         /*
          * Nowe zmienne dotyczące obecne
@@ -43,7 +42,7 @@ namespace CsClient
             Console.WriteLine("0 - atlantyda.vm, 1 - localhost");
             String ktory = Console.ReadLine();
             int liczba = Int32.Parse(ktory);
-
+            punkty.Add(new MapPoint(0, 0, true, 0, false, 0));
             while (true)
             {
                 agentTomek = new AgentAPI(Listen);
@@ -436,7 +435,7 @@ namespace CsClient
                 rotation = (rotation + 3) % 4;
             }
             Console.WriteLine("Moj obrot to " + rotation);
-            Look();
+            
         }
 
         private static void RotateRight()
@@ -453,14 +452,14 @@ namespace CsClient
 
             }
             Console.WriteLine("Moj obrot to " + rotation);
-            Look();
+            
         }
 
         private static void StepForward()
         {
             if (!agentTomek.StepForward())
                 Console.WriteLine("Wykonanie kroku nie powiodlo sie");
-            if (energy >= cennikSwiata.moveCost)
+            else if (energy >= cennikSwiata.moveCost)
             {
                 energy -= cennikSwiata.moveCost;
                 /*
@@ -481,9 +480,9 @@ namespace CsClient
                         positionX--;
                         break;
                 }
-
+                dodajAktualny();
             }
-            Look();
+            
         }
 
         private static void Look()
@@ -533,10 +532,10 @@ namespace CsClient
                             map[positionX + pole.x, positionY + pole.y].height = pole.height;
                             map[positionX + pole.x, positionY + pole.y].obstacle = pole.obstacle;
                             map[positionX + pole.x, positionY + pole.y].energy = pole.energy;*/
-                        jestX = punkty.Exists(oElement => oElement.x.Equals(positionX + pole.x));
-                        jestY = punkty.Exists(oElement => oElement.y.Equals(positionY + pole.y));
-                        if (jestX && jestY) { }
-                        else
+                        jestXY = punkty.Exists(element => element.x.Equals(positionX + pole.x) && element.y.Equals(positionY + pole.y));
+                        if (!jestXY)
+                        {
+
                             if (pole.energy == 0)
                             {
                                 punkty.Add(new MapPoint(positionX + pole.x, positionY + pole.y, false, pole.height, pole.obstacle, pole.energy));
@@ -545,14 +544,13 @@ namespace CsClient
                             {
                                 punkty.Insert(0, new MapPoint(positionX + pole.x, positionY + pole.y, false, pole.height, pole.obstacle, pole.energy));
                             }
+                        }
                         break;
-                    case 1:
+                    case 1:                          
+                        jestXY = punkty.Exists(element => element.x.Equals(positionX + pole.y) && element.y.Equals(positionY - pole.x));
 
-                        jestX = punkty.Exists(oElement => oElement.x.Equals(positionX + pole.y));
-                        jestY = punkty.Exists(oElement => oElement.y.Equals(positionY - pole.x));
-
-                        if (jestX && jestY) { }
-                        else
+                        if (!jestXY)
+                        {
                             if (pole.energy == 0)
                             {
                                 punkty.Add(new MapPoint(positionX + pole.y, positionY - pole.x, false, pole.height, pole.obstacle, pole.energy));
@@ -561,14 +559,12 @@ namespace CsClient
                             {
                                 punkty.Insert(0, new MapPoint(positionX + pole.y, positionY - pole.x, false, pole.height, pole.obstacle, pole.energy));
                             }
+                        }
                         break;
                     case 2:
-
-                        jestX = punkty.Exists(oElement => oElement.x.Equals(positionX - pole.x));
-                        jestY = punkty.Exists(oElement => oElement.y.Equals(positionY + pole.y));
-                        //if (jestX && jestY) {} else punkty.Add(new MapPoint(positionX - pole.x, positionY + pole.y, false, pole.height, pole.obstacle, pole.energy));
-                        if (jestX && jestY) { }
-                        else
+                        jestXY = punkty.Exists(element => element.x.Equals(positionX - pole.x) && element.y.Equals(positionY + pole.y));
+                        if (!jestXY)
+                        {
                             if (pole.energy == 0)
                             {
                                 punkty.Add(new MapPoint(positionX - pole.x, positionY + pole.y, false, pole.height, pole.obstacle, pole.energy));
@@ -577,14 +573,11 @@ namespace CsClient
                             {
                                 punkty.Insert(0, new MapPoint(positionX - pole.x, positionY + pole.y, false, pole.height, pole.obstacle, pole.energy));
                             }
+                        }
                         break;
                     case 3:
-
-                        jestX = punkty.Exists(oElement => oElement.x.Equals(positionX - pole.y));
-                        jestY = punkty.Exists(oElement => oElement.y.Equals(positionY + pole.x));
-                        //if (jestX && jestY) {} else punkty.Add(new MapPoint(positionX - pole.y, positionY + pole.x, false, pole.height, pole.obstacle, pole.energy));
-                        if (jestX && jestY) { }
-                        else
+                      jestXY = punkty.Exists(element => element.x.Equals(positionX - pole.y) && element.y.Equals(positionY + pole.x));
+                        if (!jestXY) {
                             if (pole.energy == 0)
                             {
                                 punkty.Add(new MapPoint(positionX - pole.y, positionY + pole.x, false, pole.height, pole.obstacle, pole.energy));
@@ -593,6 +586,7 @@ namespace CsClient
                             {
                                 punkty.Insert(0, new MapPoint(positionX - pole.y, positionY + pole.x, false, pole.height, pole.obstacle, pole.energy));
                             }
+                         }   
                         break;
                 }
 
@@ -650,7 +644,7 @@ namespace CsClient
                     cResponse reply = myBot.chat("I tak sie nie dogadamy. Poza tym, nie chce mi sie z toba gadac", "Default");
                     Console.WriteLine("Teraz napisze: " + reply.getOutput());
 
-                    if (!agentTomek.Speak(reply.getOutput(), 1))
+                    if (!agentTomek.Speak("I tak sie nie dogadamy. Poza tym, nie chce mi sie z toba gadac", 1))
                         Console.WriteLine("Mowienie nie powiodlo sie - brak energii");
                     else
                         energy -= cennikSwiata.speakCost;
@@ -664,6 +658,24 @@ namespace CsClient
             for (int i = 0; i < wiadomosci.Count; i++)
             {
                 Console.WriteLine("Agent: " + wiadomosci[i].author + "\n powiedzial: " + wiadomosci[i].komunikat);
+            }
+        }
+
+        /*
+         * Funkcja dodająca punkty, na których agent stanął.  
+         * 
+         */
+        private static void dodajAktualny()
+        {
+            bool naliscie;
+            naliscie = punkty.Exists(punkt => punkt.x.Equals(positionX) && punkt.y.Equals(positionY));
+            if (!naliscie)
+                punkty.Add(new MapPoint(positionX, positionY, true, 0, false, 0));
+            else
+            {
+                
+                int index = punkty.FindIndex(delegate(MapPoint pp) { return pp.x == positionX && pp.y == positionY; });
+                punkty[index].known = true;
             }
         }
                 
