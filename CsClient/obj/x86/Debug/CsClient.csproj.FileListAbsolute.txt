@@ -24,3 +24,5 @@ C:\Blazej\Studia\komunikacja czlowiek-komputer\Agent Zelowy Mis\AgentZelowychMis
 C:\Blazej\Studia\komunikacja czlowiek-komputer\Agent Zelowy Mis\AgentZelowychMisi\CsClient\obj\x86\Debug\CsClient.exe
 C:\Blazej\Studia\komunikacja czlowiek-komputer\Agent Zelowy Mis\AgentZelowychMisi\CsClient\obj\x86\Debug\CsClient.pdb
 C:\Blazej\Studia\komunikacja czlowiek-komputer\Agent Zelowy Mis\AgentZelowychMisi\CsClient\bin\Debug\AIMLBot.dll
+C:\Users\szym-samsung\RymCymCymZDupyDym\CsClient\obj\x86\Debug\CsClient.exe
+C:\Users\szym-samsung\RymCymCymZDupyDym\CsClient\obj\x86\Debug\CsClient.pdb
