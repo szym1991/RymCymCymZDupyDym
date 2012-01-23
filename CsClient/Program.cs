@@ -18,6 +18,7 @@ namespace CsClient
         static List<MapPoint> punkty = new List<MapPoint>();
         static bool jestXY = false;
         static List<Wiadomosc> wiadomosci = new List<Wiadomosc>();
+        
         /*
          * Nowe zmienne dotyczące obecne
          * j pozycji agenta
@@ -42,6 +43,7 @@ namespace CsClient
             Console.WriteLine("0 - atlantyda.vm, 1 - localhost");
             String ktory = Console.ReadLine();
             int liczba = Int32.Parse(ktory);
+            DoAIML aiml = new DoAIML();
             punkty.Add(new MapPoint(0, 0, true, 0, false, 0));
             while (true)
             {
@@ -62,6 +64,8 @@ namespace CsClient
 
                 Console.Write("Podaj imie: ");
                 imie = Console.ReadLine();
+                
+                aiml.zapis("jak masz na imie", imie);
 
                 try
                 {
@@ -410,12 +414,12 @@ namespace CsClient
             int added = agentTomek.Recharge();
             energy += added;
             Console.WriteLine("Otrzymano " + added + " energii");
-            
+
         }
 
         private static void Speak()
         {
-            
+
             if (!agentTomek.Speak(Console.ReadLine(), 1))
                 Console.WriteLine("Mowienie nie powiodlo sie - brak energii");
             else
@@ -435,7 +439,7 @@ namespace CsClient
                 rotation = (rotation + 3) % 4;
             }
             Console.WriteLine("Moj obrot to " + rotation);
-            
+
         }
 
         private static void RotateRight()
@@ -452,7 +456,7 @@ namespace CsClient
 
             }
             Console.WriteLine("Moj obrot to " + rotation);
-            
+
         }
 
         private static void StepForward()
@@ -482,7 +486,7 @@ namespace CsClient
                 }
                 dodajAktualny();
             }
-            
+
         }
 
         private static void Look()
@@ -546,7 +550,7 @@ namespace CsClient
                             }
                         }
                         break;
-                    case 1:                          
+                    case 1:
                         jestXY = punkty.Exists(element => element.x.Equals(positionX + pole.y) && element.y.Equals(positionY - pole.x));
 
                         if (!jestXY)
@@ -576,8 +580,9 @@ namespace CsClient
                         }
                         break;
                     case 3:
-                      jestXY = punkty.Exists(element => element.x.Equals(positionX - pole.y) && element.y.Equals(positionY + pole.x));
-                        if (!jestXY) {
+                        jestXY = punkty.Exists(element => element.x.Equals(positionX - pole.y) && element.y.Equals(positionY + pole.x));
+                        if (!jestXY)
+                        {
                             if (pole.energy == 0)
                             {
                                 punkty.Add(new MapPoint(positionX - pole.y, positionY + pole.x, false, pole.height, pole.obstacle, pole.energy));
@@ -586,7 +591,7 @@ namespace CsClient
                             {
                                 punkty.Insert(0, new MapPoint(positionX - pole.y, positionY + pole.x, false, pole.height, pole.obstacle, pole.energy));
                             }
-                         }   
+                        }
                         break;
                 }
 
@@ -650,7 +655,7 @@ namespace CsClient
                         energy -= cennikSwiata.speakCost;
                     wiadomosci[i].odpowiedzialem = true;
                 }
-            }       
+            }
         }
 
         private static void listaWiadomosci()
@@ -673,13 +678,13 @@ namespace CsClient
                 punkty.Add(new MapPoint(positionX, positionY, true, 0, false, 0));
             else
             {
-                
+
                 int index = punkty.FindIndex(delegate(MapPoint pp) { return pp.x == positionX && pp.y == positionY; });
                 punkty[index].known = true;
             }
         }
-                
-            // KONIEC KLASY I W OGÓLE WSZYSTKIEGO. PROSZĘ O NIE DODAWANIE NIC PONIŻEJ TEJ LINIJKI :P
-        
+
+        // KONIEC KLASY I W OGÓLE WSZYSTKIEGO. PROSZĘ O NIE DODAWANIE NIC PONIŻEJ TEJ LINIJKI :P
+
     }
 }
