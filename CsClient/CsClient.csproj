@@ -71,9 +71,11 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DoAIML.cs" />
     <Compile Include="MapPoint.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Wiadomosc.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ClientCS\ClientCS.csproj">
