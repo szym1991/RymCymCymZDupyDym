@@ -18,12 +18,13 @@ namespace CsClient
         static List<MapPoint> punkty = new List<MapPoint>();
         static bool jestXY = false;
         static List<Wiadomosc> wiadomosci = new List<Wiadomosc>();
-        
+		static int maxValueX = 0, minValueX = 0, maxValueY = 0, minValueY = 0;
+
         /*
          * Nowe zmienne dotyczące obecne
          * j pozycji agenta
          */
-        static int positionX = 0;//sufit z rozmiar mapy/2, żeby agent po pojawieniu się znajdował się na środku swojej mapy
+        static int positionX = 0;
         static int positionY = 0;
         static int rotation = 0;
 
@@ -43,7 +44,7 @@ namespace CsClient
             Console.WriteLine("0 - atlantyda.vm, 1 - localhost");
             String ktory = Console.ReadLine();
             int liczba = Int32.Parse(ktory);
-            DoAIML aiml = new DoAIML();
+			DoAIML aiml = new DoAIML();
             punkty.Add(new MapPoint(0, 0, true, 0, false, 0));
             while (true)
             {
@@ -58,14 +59,14 @@ namespace CsClient
                 groupname = "ZeloweMisie";
                 if (liczba == 0) grouppass = "wrggke";
                 else grouppass = "vkbhrt";
-
+				
                 Console.Write("Podaj nazwe swiata: ");
                 String worldname = Console.ReadLine();
 
                 Console.Write("Podaj imie: ");
                 imie = Console.ReadLine();
-                
                 aiml.zapis("jak masz na imie", imie);
+
 
                 try
                 {
@@ -131,25 +132,41 @@ namespace CsClient
                         break;
                     case ConsoleKey.F: znanePunkty();
                         break;
+                    case ConsoleKey.W: SearchingEnergy();
+                        break;
+                    case ConsoleKey.X:
+                        int[] ladowarka = FindEnergy();
+                        Console.WriteLine("\nNajbliższe znane mi pole energii znajduje się w:" + ladowarka[0] + "," + ladowarka[1] + ", a jestem na" + positionX + "," + positionY);
+                        break;
+                    case ConsoleKey.K: obliczWielkosc();
+                        break;
+                    case ConsoleKey.Z:
+                        goToPoint(FindEnergy());
+                        break;
                     default: Console.Beep();
                         break;
                 }
             }
         }
-
+        /*
+         * Podstawowy algorytm biegania postaci. Służy do podstawowego zwiadu.
+         */
         private static void Running()
         {
             while (true)
             {
-                //  SearchingEnergy(); //do odkomentowania przy testach
+                SearchingEnergy(); //do odkomentowania przy testach
                 autoOdpowiedz();
-                StepForward();
-                Recharge();
-                if (!agentTomek.StepForward())
-                {
+                if (!StepForward())
                     RotateRight();
-                }
-                System.Threading.Thread.Sleep(2000);
+                //System.Threading.Thread.Sleep(1000);//Przeniesione do StepForward
+                /*
+                 * Gdy agent stwierdzi, że poziom energii jest krytyczny, to udaje się do najbliższego znanego mu źródła energii. Zakomentowane do momentu poprawienia metody odpowiedzialnej za rekurencyjne podążanie do punktu.
+                 */
+                /*if (energy < 200)
+                {
+                    goToPoint(FindEnergy());
+                }*/
             }
         }
 
@@ -162,60 +179,46 @@ namespace CsClient
             OrientedField[] pola = agentTomek.Look();
             int x = 0;
             int y = 0;
+            int distance = 10000;
+            int tempDistance;
             foreach (OrientedField pole in pola)
             {
                 if (pole.energy != 0)
                 {
-                    x = pole.x;
-                    y = pole.y;
-                    break;
+                    tempDistance = Math.Abs(pole.x - positionX) + Math.Abs(pole.y - positionY);
+                    if ((tempDistance < distance))
+                    {
+                        x = pole.x;
+                        y = pole.y;
+                        distance = tempDistance;
+                    }
                 }
             }
-
+            //Console.Write("Zauwazylem zrodlo energii w"+x+","+y);
+            
             for (int i = y; i != 0; i--)
             {
-                if (agentTomek.StepForward())
-                {
-                    StepForward();
-                    Recharge();
-                }
-                else
-                {
+                if (!StepForward())
                     break;
-                }
             }
             if (x != 0)
             {
                 if (x >= 0)
                 {
                     RotateRight();
-                    for (int i = -(x); i != 0; i--)
+                    for (int i = x; i != 0; i--)
                     {
-                        if (agentTomek.StepForward())
-                        {
-                            StepForward();
-                            Recharge();
-                        }
-                        else
-                        {
+                        if (!StepForward())
                             break;
-                        }
                     }
                 }
                 else
                 {
                     RotateLeft();
-                    for (int i = x; i != 0; i--)
+                    for (int i = -x; i != 0; i--)
                     {
-                        if (agentTomek.StepForward())
-                        {
-                            StepForward();
-                            Recharge();
-                        }
-                        else
-                        {
+                        if (!StepForward())
                             break;
-                        }
                     }
                 }
             }
@@ -359,7 +362,7 @@ namespace CsClient
         {
             for (int i = 0; i < Math.Abs(point[0 + isInversed]); i++)
             {
-                if (!agentTomek.StepForward())
+                if (!StepForward())
                 {
                     RotateRight();
                     StepForward();
@@ -370,7 +373,7 @@ namespace CsClient
             RotateRight();
             for (int j = 0; j < Math.Abs(point[1 - isInversed]); j++)
             {
-                if (!agentTomek.StepForward())
+                if (!StepForward())
                 {
                     RotateLeft();
                     StepForward();
@@ -386,7 +389,7 @@ namespace CsClient
         {
             for (int i = 0; i < Math.Abs(point[0 + isInversed]); i++)
             {
-                if (!agentTomek.StepForward())
+                if (!StepForward())
                 {
                     RotateLeft();
                     StepForward();
@@ -397,7 +400,7 @@ namespace CsClient
             RotateLeft();
             for (int j = 0; j < Math.Abs(point[1 - isInversed]); j++)
             {
-                if (!agentTomek.StepForward())
+                if (!StepForward())
                 {
                     RotateRight();
                     StepForward();
@@ -414,12 +417,12 @@ namespace CsClient
             int added = agentTomek.Recharge();
             energy += added;
             Console.WriteLine("Otrzymano " + added + " energii");
-
+            
         }
 
         private static void Speak()
         {
-
+            
             if (!agentTomek.Speak(Console.ReadLine(), 1))
                 Console.WriteLine("Mowienie nie powiodlo sie - brak energii");
             else
@@ -439,7 +442,7 @@ namespace CsClient
                 rotation = (rotation + 3) % 4;
             }
             Console.WriteLine("Moj obrot to " + rotation);
-
+            
         }
 
         private static void RotateRight()
@@ -456,16 +459,20 @@ namespace CsClient
 
             }
             Console.WriteLine("Moj obrot to " + rotation);
-
+            
         }
 
-        private static void StepForward()
+        private static bool StepForward()
         {
             if (!agentTomek.StepForward())
+            {
                 Console.WriteLine("Wykonanie kroku nie powiodlo sie");
+                return false;
+            }
             else if (energy >= cennikSwiata.moveCost)
             {
                 energy -= cennikSwiata.moveCost;
+                System.Threading.Thread.Sleep(500);
                 /*
                  * uaktualnienie pozycji. Kierunek uzależniony od obrotu
                  */
@@ -485,15 +492,26 @@ namespace CsClient
                         break;
                 }
                 dodajAktualny();
+                ustalKrance();
+                Look();
+                //Przy każdym kroku następuje trzykrotna próba naładowania, dzięki czemu jak trafi na źródł energii większe od 200 będzie ładować bak do pełna
+                Recharge();
+                Recharge();
+                Recharge();
+                return true;
+                //Console.WriteLine("Moja obecna pozycja to"+ positionX + "i" + positionY);
             }
-
+            return false;
+            
         }
 
         private static void Look()
         {
             OrientedField[] pola = agentTomek.Look();
+            
             foreach (OrientedField pole in pola)
             {
+                /*Wyświetlanie co chwilę wszystkch zobaczonych pól. Niepotrzebny Spam
                 Console.WriteLine("-----------------------------");
                 Console.WriteLine("POLE " + pole.x + "," + pole.y);
                 switch (rotation)
@@ -505,7 +523,7 @@ namespace CsClient
                         Console.WriteLine("A na liscie: [" + (positionX + pole.y) + ", " + (positionY - pole.x) + "]");
                         break;
                     case 2:
-                        Console.WriteLine("A na liscie: [" + (positionX - pole.x) + ", " + (positionY + pole.y) + "]");
+                        Console.WriteLine("A na liscie: [" + (positionX - pole.x) + ", " + (positionY - pole.y) + "]");
                         break;
                     case 3:
                         Console.WriteLine("A na liscie: [" + (positionX - pole.y) + ", " + (positionY + pole.x) + "]");
@@ -523,7 +541,7 @@ namespace CsClient
                 Console.WriteLine("Znam juz " + punkty.Count + " punktow");
 
                 Console.WriteLine("-----------------------------");
-
+                */
                 # region Saving info to map
                 /*
                  * Zapamiętywanie mapy. Nowsza wersja, która bierze pod uwagę obrót postaci.
@@ -550,7 +568,7 @@ namespace CsClient
                             }
                         }
                         break;
-                    case 1:
+                    case 1:                          
                         jestXY = punkty.Exists(element => element.x.Equals(positionX + pole.y) && element.y.Equals(positionY - pole.x));
 
                         if (!jestXY)
@@ -566,23 +584,22 @@ namespace CsClient
                         }
                         break;
                     case 2:
-                        jestXY = punkty.Exists(element => element.x.Equals(positionX - pole.x) && element.y.Equals(positionY + pole.y));
+                        jestXY = punkty.Exists(element => element.x.Equals(positionX - pole.x) && element.y.Equals(positionY - pole.y));
                         if (!jestXY)
                         {
                             if (pole.energy == 0)
                             {
-                                punkty.Add(new MapPoint(positionX - pole.x, positionY + pole.y, false, pole.height, pole.obstacle, pole.energy));
+                                punkty.Add(new MapPoint(positionX - pole.x, positionY - pole.y, false, pole.height, pole.obstacle, pole.energy));
                             }
                             else
                             {
-                                punkty.Insert(0, new MapPoint(positionX - pole.x, positionY + pole.y, false, pole.height, pole.obstacle, pole.energy));
+                                punkty.Insert(0, new MapPoint(positionX - pole.x, positionY - pole.y, false, pole.height, pole.obstacle, pole.energy));
                             }
                         }
                         break;
                     case 3:
-                        jestXY = punkty.Exists(element => element.x.Equals(positionX - pole.y) && element.y.Equals(positionY + pole.x));
-                        if (!jestXY)
-                        {
+                      jestXY = punkty.Exists(element => element.x.Equals(positionX - pole.y) && element.y.Equals(positionY + pole.x));
+                        if (!jestXY) {
                             if (pole.energy == 0)
                             {
                                 punkty.Add(new MapPoint(positionX - pole.y, positionY + pole.x, false, pole.height, pole.obstacle, pole.energy));
@@ -591,7 +608,7 @@ namespace CsClient
                             {
                                 punkty.Insert(0, new MapPoint(positionX - pole.y, positionY + pole.x, false, pole.height, pole.obstacle, pole.energy));
                             }
-                        }
+                         }   
                         break;
                 }
 
@@ -608,11 +625,11 @@ namespace CsClient
             {
                 Console.WriteLine("---------");
                 Console.WriteLine("[" + poi.x + ", " + poi.y + "]");
-                if (poi.known) Console.WriteLine("Pole odwiedzone");
+                if (poi.known) Console.WriteLine("BYŁEM NA TYM POLU!");
                 else Console.WriteLine("Pole nieodwiedzone");
                 if (!poi.obstacle) Console.WriteLine("Wysokosc: " + poi.height);
                 else Console.WriteLine("Przeszkoda");
-                if (poi.energy > 0) Console.WriteLine("Zrodlo energii: " + poi.energy);
+                if (poi.energy != 0) Console.WriteLine("Zrodlo energii: " + poi.energy);
 
             }
 
@@ -655,7 +672,7 @@ namespace CsClient
                         energy -= cennikSwiata.speakCost;
                     wiadomosci[i].odpowiedzialem = true;
                 }
-            }
+            }       
         }
 
         private static void listaWiadomosci()
@@ -678,13 +695,39 @@ namespace CsClient
                 punkty.Add(new MapPoint(positionX, positionY, true, 0, false, 0));
             else
             {
-
+                
                 int index = punkty.FindIndex(delegate(MapPoint pp) { return pp.x == positionX && pp.y == positionY; });
                 punkty[index].known = true;
             }
         }
+		
+		 /* 
+         * Funkcja, ktĂłra sprawdza jak wielka w przybliĹĽeniu jest mapa.
+         * Sprawdza dĹ‚ugoĹ›Ä‡ miÄ™dzy najdalszymi punktami, jakie zostaĹ‚y odwiedzone i na jej podstawie
+         * ustala, jak wielka jest mapa.
+         */
+        private static void obliczWielkosc()
+        {
+            int wielkosc;
+            int dlugoscX = Math.Abs(minValueX - maxValueX);
+            int dlugoscY = Math.Abs(minValueY - maxValueY);
+            if (dlugoscX > dlugoscY) wielkosc = dlugoscX;
+            else wielkosc = dlugoscY;
+            int iloscpunktow = (wielkosc + 3) * (wielkosc + 3);
+            Console.WriteLine("Wielkosc mapy to co najmniej: "+(wielkosc + 1)+". Zatem jest co najmniej "+
+                iloscpunktow);
+            Console.WriteLine("Widziałem " + punkty.Count + " z " + iloscpunktow); 
+        }
 
-        // KONIEC KLASY I W OGÓLE WSZYSTKIEGO. PROSZĘ O NIE DODAWANIE NIC PONIŻEJ TEJ LINIJKI :P
-
+        private static void ustalKrance()
+        {
+            if (positionX < minValueX) minValueX = positionX;
+            if (positionX > maxValueX) maxValueX = positionX;
+            if (positionY < minValueY) minValueY = positionY;
+            if (positionY > maxValueY) maxValueY = positionY;
+        }
+                
+            // KONIEC KLASY I W OGÓLE WSZYSTKIEGO. PROSZĘ O NIE DODAWANIE NIC PONIŻEJ TEJ LINIJKI :P
+        
     }
 }

@@ -8,6 +8,7 @@ public class MapPoint
     public int height;
     public bool obstacle;
     public int energy;
+    
     public MapPoint(int polX, int polY, bool znane, int wysokosc, bool przeszkoda, int energia)
 	{
         this.x = polX;
@@ -16,5 +17,6 @@ public class MapPoint
         this.height = wysokosc;
         this.obstacle = przeszkoda;
         this.energy = energia;
+      
 	}
 }
