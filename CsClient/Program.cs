@@ -19,11 +19,12 @@ namespace CsClient
         static bool jestXY = false;
         static List<Wiadomosc> wiadomosci = new List<Wiadomosc>();
 		static int maxValueX = 0, minValueX = 0, maxValueY = 0, minValueY = 0;
+        
 
         /*
-         * Nowe zmienne dotyczące obecne
-         * j pozycji agenta
+         * Nowe zmienne dotyczące obecnej pozycji agenta
          */
+
         static int positionX = 0;
         static int positionY = 0;
         static int rotation = 0;
@@ -38,9 +39,8 @@ namespace CsClient
 
         static void Main(string[] args)
         {
-            /* 
-         *  Pierdu, pierdu, zebym mogl sie bawic na localu bez zmieniania hosta - Cietrzew 
-         */
+            
+                        
             Console.WriteLine("0 - atlantyda.vm, 1 - localhost");
             String ktory = Console.ReadLine();
             int liczba = Int32.Parse(ktory);
@@ -658,13 +658,16 @@ namespace CsClient
                     if (!agentTomek.Speak(reply.getOutput(), 1))
                         Console.WriteLine("Mowienie nie powiodlo sie - brak energii");
                     else
+                    {
                         energy -= cennikSwiata.speakCost;
-                    wiadomosci[i].odpowiedzialem = true;
+                        wiadomosci[i].odpowiedzialem = true;
+                        wiadomosci.RemoveAt(i);
+                    }
                 }
                 else
                 {
-                    cResponse reply = myBot.chat("I tak sie nie dogadamy. Poza tym, nie chce mi sie z toba gadac", "Default");
-                    Console.WriteLine("Teraz napisze: " + reply.getOutput());
+
+                    Console.WriteLine("Teraz napisze: I tak sie nie dogadamy. Poza tym, nie chce mi sie z toba gadac");
 
                     if (!agentTomek.Speak("I tak sie nie dogadamy. Poza tym, nie chce mi sie z toba gadac", 1))
                         Console.WriteLine("Mowienie nie powiodlo sie - brak energii");
