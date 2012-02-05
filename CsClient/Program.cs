@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Data.Realm;
 using Data;
 using AIMLBot;
@@ -44,7 +45,13 @@ namespace CsClient
             Console.WriteLine("0 - atlantyda.vm, 1 - localhost");
             String ktory = Console.ReadLine();
             int liczba = Int32.Parse(ktory);
-			DoAIML aiml = new DoAIML();
+
+            string fileName = "Default.aiml";
+            string sourcePath = @".\aiml\schemat\";
+            string targetPath = @".\aiml\";
+
+
+
             punkty.Add(new MapPoint(0, 0, true, 0, false, 0));
             while (true)
             {
@@ -65,7 +72,14 @@ namespace CsClient
 
                 Console.Write("Podaj imie: ");
                 imie = Console.ReadLine();
-                aiml.zapis("jak masz na imie", imie);
+
+                if(File.Exists("aiml\\" + imie + ".aiml"))
+                    File.Delete("aiml\\" + imie + ".aiml");
+                string sourceFile = System.IO.Path.Combine(sourcePath, fileName);
+                string destFile = System.IO.Path.Combine(targetPath, imie + ".aiml");
+                File.Copy(sourceFile, destFile);
+                DoAIML aiml = new DoAIML(imie + ".aiml");
+                aiml.zapis("imie", imie);
 
 
                 try
@@ -106,6 +120,7 @@ namespace CsClient
             while (loop)
             {
                 Console.WriteLine("Moja energia: " + energy);
+                energiaDoAIML();
                 switch (Console.ReadKey().Key)
                 {
                     case ConsoleKey.Spacebar: Look();
@@ -728,6 +743,16 @@ namespace CsClient
             if (positionX > maxValueX) maxValueX = positionX;
             if (positionY < minValueY) minValueY = positionY;
             if (positionY > maxValueY) maxValueY = positionY;
+        }
+
+        private static void energiaDoAIML()
+        {
+            aiml().zapis("energia", energy.ToString());
+        }
+
+        private static DoAIML aiml()
+        {
+            return new DoAIML(imie + ".aiml");
         }
                 
             // KONIEC KLASY I W OGÓLE WSZYSTKIEGO. PROSZĘ O NIE DODAWANIE NIC PONIŻEJ TEJ LINIJKI :P

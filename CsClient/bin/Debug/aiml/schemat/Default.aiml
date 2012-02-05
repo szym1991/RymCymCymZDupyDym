@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<aiml>
+<category>
+	<pattern>*</pattern>
+	<template>
+		<random>
+			<li>No chyba nie...</li>
+			<li>Ale o co chodzi?</li>
+		</random>
+	</template>
+</category>
+<category>
+<pattern>Jak masz na imie</pattern>
+<template><set name="imie"></set></template>
+</category>
+<category>
+<pattern>Gdzie jestes</pattern>
+<template>W czarnej dupie</template>
+</category>
+<category>
+<pattern>Ile masz energii</pattern>
+<template><set name="energia"></set> energii</template>
+</category>
+</aiml>
