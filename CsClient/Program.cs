@@ -19,8 +19,8 @@ namespace CsClient
         static List<MapPoint> punkty = new List<MapPoint>();
         static bool jestXY = false;
         static List<Wiadomosc> wiadomosci = new List<Wiadomosc>();
-		static int maxValueX = 0, minValueX = 0, maxValueY = 0, minValueY = 0;
-        
+        static int maxValueX = 0, minValueX = 0, maxValueY = 0, minValueY = 0;
+        static int ruchleft, ruchright;
 
         /*
          * Nowe zmienne dotyczące obecnej pozycji agenta
@@ -40,8 +40,8 @@ namespace CsClient
 
         static void Main(string[] args)
         {
-            
-                        
+
+
             Console.WriteLine("0 - atlantyda.vm, 1 - localhost");
             String ktory = Console.ReadLine();
             int liczba = Int32.Parse(ktory);
@@ -60,7 +60,7 @@ namespace CsClient
                 groupname = "ZeloweMisie";
                 if (liczba == 0) grouppass = "wrggke";
                 else grouppass = "vkbhrt";
-				
+
                 Console.Write("Podaj nazwe swiata: ");
                 String worldname = Console.ReadLine();
 
@@ -136,7 +136,7 @@ namespace CsClient
                         break;
                     case ConsoleKey.Enter: Speak();
                         break;
-                    case ConsoleKey.Q: File.Delete("aiml\\" + imie + ".aiml"); loop = false; 
+                    case ConsoleKey.Q: File.Delete("aiml\\" + imie + ".aiml"); loop = false;
                         break;
                     case ConsoleKey.D: agentTomek.Disconnect();
                         break;
@@ -243,7 +243,7 @@ namespace CsClient
                     agentTomek.Speak("jak masz na imie", 1);
             }
             //Console.Write("Zauwazylem zrodlo energii w"+x+","+y);
-            
+
             for (int i = y; i != 0; i--)
             {
                 if (!StepForward())
@@ -271,7 +271,7 @@ namespace CsClient
                 }
             }
         }
-        
+
         #region Exploration
 
         /*
@@ -279,7 +279,7 @@ namespace CsClient
          */
         private static void checkNeightbours(MapPoint Field)
         {
-            for(int i = (Field.x) - 1; i<=(Field.x) + 1; i++)
+            for (int i = (Field.x) - 1; i <= (Field.x) + 1; i++)
             {
                 for (int j = (Field.y) - 1; j <= (Field.y) + 1; j++)
                 {
@@ -514,12 +514,12 @@ namespace CsClient
             int added = agentTomek.Recharge();
             energy += added;
             Console.WriteLine("Otrzymano " + added + " energii");
-            
+
         }
 
         private static void Speak()
         {
-            
+
             if (!agentTomek.Speak(Console.ReadLine(), 1))
                 Console.WriteLine("Mowienie nie powiodlo sie - brak energii");
             else
@@ -539,7 +539,7 @@ namespace CsClient
                 rotation = (rotation + 3) % 4;
             }
             Console.WriteLine("Moj obrot to " + rotation);
-            
+
         }
 
         private static void RotateRight()
@@ -556,7 +556,7 @@ namespace CsClient
 
             }
             Console.WriteLine("Moj obrot to " + rotation);
-            
+
         }
 
         private static bool StepForward()
@@ -599,7 +599,7 @@ namespace CsClient
                 //Console.WriteLine("Moja obecna pozycja to"+ positionX + "i" + positionY);
             }
             return false;
-            
+
         }
 
         private static void SavingInfoToMap(int positionX_Plus, int positionY_Plus, OrientedField pole)
@@ -744,7 +744,7 @@ namespace CsClient
                         energy -= cennikSwiata.speakCost;
                     wiadomosci[i].odpowiedzialem = true;
                 }
-            }       
+            }
         }
 
         private static void listaWiadomosci()
@@ -767,17 +767,17 @@ namespace CsClient
                 punkty.Add(new MapPoint(positionX, positionY, true, 0, false, 0, 1));
             else
             {
-                
+
                 int index = punkty.FindIndex(delegate(MapPoint pp) { return pp.x == positionX && pp.y == positionY; });
                 punkty[index].known = true;
             }
         }
-		
-		 /* 
-         * Funkcja, ktĂłra sprawdza jak wielka w przybliĹĽeniu jest mapa.
-         * Sprawdza dĹ‚ugoĹ›Ä‡ miÄ™dzy najdalszymi punktami, jakie zostaĹ‚y odwiedzone i na jej podstawie
-         * ustala, jak wielka jest mapa.
-         */
+
+        /* 
+        * Funkcja, ktĂłra sprawdza jak wielka w przybliĹĽeniu jest mapa.
+        * Sprawdza dĹ‚ugoĹ›Ä‡ miÄ™dzy najdalszymi punktami, jakie zostaĹ‚y odwiedzone i na jej podstawie
+        * ustala, jak wielka jest mapa.
+        */
         private static void obliczWielkosc()
         {
             int wielkosc;
@@ -786,9 +786,9 @@ namespace CsClient
             if (dlugoscX > dlugoscY) wielkosc = dlugoscX;
             else wielkosc = dlugoscY;
             int iloscpunktow = (wielkosc + 3) * (wielkosc + 3);
-            Console.WriteLine("Wielkosc mapy to co najmniej: "+(wielkosc + 1)+". Zatem jest co najmniej "+
+            Console.WriteLine("Wielkosc mapy to co najmniej: " + (wielkosc + 1) + ". Zatem jest co najmniej " +
                 iloscpunktow);
-            Console.WriteLine("Widziałem " + punkty.Count + " z " + iloscpunktow); 
+            Console.WriteLine("Widziałem " + punkty.Count + " z " + iloscpunktow);
         }
 
         private static void ustalKrance()
@@ -808,8 +808,8 @@ namespace CsClient
         {
             return new DoAIML(imie + ".aiml");
         }
-                
-            // KONIEC KLASY I W OGÓLE WSZYSTKIEGO. PROSZĘ O NIE DODAWANIE NIC PONIŻEJ TEJ LINIJKI :P
-        
+
+        // KONIEC KLASY I W OGÓLE WSZYSTKIEGO. PROSZĘ O NIE DODAWANIE NIC PONIŻEJ TEJ LINIJKI :P
+
     }
 }
