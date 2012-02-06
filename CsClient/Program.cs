@@ -148,6 +148,7 @@ namespace CsClient
                 }
             }
         }
+
         /*
          * Podstawowy algorytm biegania postaci. Służy do podstawowego zwiadu.
          */
@@ -155,18 +156,28 @@ namespace CsClient
         {
             while (true)
             {
+                Random rnd = new Random();
+                int v = 0, start = 0, end = 3;
+                v = rnd.Next(start, end);
                 SearchingEnergy(); //do odkomentowania przy testach
                 autoOdpowiedz();
                 if (!StepForward())
-                    RotateRight();
+                    if (v <= 1)
+                    {
+                        RotateRight();
+                    }
+                    else if (v > 1)
+                    {
+                        RotateLeft();
+                    }
                 //System.Threading.Thread.Sleep(1000);//Przeniesione do StepForward
                 /*
                  * Gdy agent stwierdzi, że poziom energii jest krytyczny, to udaje się do najbliższego znanego mu źródła energii. Zakomentowane do momentu poprawienia metody odpowiedzialnej za rekurencyjne podążanie do punktu.
                  */
-                /*if (energy < 200)
+                if (energy < 250)
                 {
                     goToPoint(FindEnergy());
-                }*/
+                }
             }
         }
 
