@@ -162,14 +162,38 @@ namespace CsClient
                 SearchingEnergy(); //do odkomentowania przy testach
                 autoOdpowiedz();
                 if (!StepForward())
+                {
                     if (v <= 1)
                     {
-                        RotateRight();
+                        if (ruchright >= 3)
+                        {
+                            RotateLeft();
+                            ruchleft = ruchleft + 1;
+                            ruchright = 0;
+                        }
+                        else
+                        {
+                            RotateRight();
+                            ruchright = ruchright + 1;
+                            ruchleft = 0;
+                        }
                     }
                     else if (v > 1)
                     {
-                        RotateLeft();
+                        if (ruchleft >= 3)
+                        {
+                            RotateRight();
+                            ruchright = ruchright + 1;
+                            ruchleft = 0;
+                        }
+                        else
+                        {
+                            RotateLeft();
+                            ruchleft = ruchleft + 1;
+                            ruchright = 0;
+                        }
                     }
+                }
                 //System.Threading.Thread.Sleep(1000);//Przeniesione do StepForward
                 /*
                  * Gdy agent stwierdzi, że poziom energii jest krytyczny, to udaje się do najbliższego znanego mu źródła energii. Zakomentowane do momentu poprawienia metody odpowiedzialnej za rekurencyjne podążanie do punktu.
