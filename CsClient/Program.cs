@@ -137,7 +137,7 @@ namespace CsClient
                         break;
                     case ConsoleKey.Enter: Speak();
                         break;
-                    case ConsoleKey.Q: loop = false;
+                    case ConsoleKey.Q: File.Delete("aiml\\" + imie + ".aiml"); loop = false; 
                         break;
                     case ConsoleKey.D: agentTomek.Disconnect();
                         break;
@@ -775,7 +775,7 @@ namespace CsClient
 
         private static void energiaDoAIML()
         {
-            aiml().zapis("energia", energy.ToString());
+            aiml().zapis("energia", energy.ToString() + " energii");
         }
 
         private static DoAIML aiml()

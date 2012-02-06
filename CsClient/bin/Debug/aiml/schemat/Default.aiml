@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <aiml>
 <category>
+	<pattern>Czesc</pattern>
+	<template>Witaj</template>
+</category>
+<category>
+	<pattern>Witam</pattern>
+	<template><srai>Czesc</srai></template>
+</category>
+<category>
+	<pattern>Dzien dobry</pattern>
+	<template><srai>Czesc></srai></template>
+</category>
+<category>
+	<pattern>Hej</pattern>
+	<template><srai>Czesc</srai></template>
+</category>
+<category>
 	<pattern>*</pattern>
 	<template>
 		<random>
@@ -13,12 +29,68 @@
 <pattern>Jak masz na imie</pattern>
 <template><set name="imie"></set></template>
 </category>
+
 <category>
-<pattern>Gdzie jestes</pattern>
-<template>W czarnej dupie</template>
+	<pattern>Ile masz energii</pattern>
+	<template>Mam energii <set name="energia"></set>.</template>
 </category>
 <category>
-<pattern>Ile masz energii</pattern>
-<template><set name="energia"></set> energii</template>
+	<pattern>Duzo masz energii</pattern>
+	<template><srai>Ile masz energii</srai></template>
+</category>
+<category>
+	<pattern>Masz duzo energii</pattern>
+	<template><srai>Ile masz energii</srai></template>
+</category>
+<category>
+	<pattern>Jaki jest zapas Twojej energii</pattern>
+	<template><srai>Ile masz energii</srai></template>
+</category>
+
+
+
+<category>
+<pattern>* Pa</pattern>
+<template>
+	<random>
+      <li> Pa. </li>
+      <li> Dowidzenia. </li>
+      <li> Papatki </li>
+      <li> Do zobaczenia. </li>
+   </random>
+</template> 
+</category>
+<category>
+<pattern>* Musze isc</pattern>
+<template>
+	<random>
+      <li> Pa. </li>
+      <li> Dowidzenia. </li>
+      <li> Papatki </li>
+      <li> Do zobaczenia. </li>
+   </random>
+</template> 
+</category>
+<category>
+<pattern>* Dowidzenia</pattern>
+<template>
+	<random>
+      <li> Pa. </li>
+      <li> Dowidzenia. </li>
+      <li> Papatki </li>
+      <li> Do zobaczenia. </li>
+   </random>
+</template> 
+</category>
+<category>
+<pattern>*Papatki</pattern>
+<template>
+	<random>
+      <li> Pa. </li>
+      <li> Dowidzenia. </li>
+      <li> Papatki </li>
+      <li> Do zobaczenia. </li>
+   </random>
+</template> 
 </category>
 </aiml>
