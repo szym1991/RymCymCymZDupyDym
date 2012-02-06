@@ -245,6 +245,55 @@ namespace CsClient
                 }
             }
         }
+        
+        #region Exploration
+
+        /*
+         * Sprawdza czy dla danego pola wszyscy sąsiedzi zostali już zbadani
+         */
+        private static void checkNeightbours(MapPoint Field)
+        {
+            for(int i = (Field.x) - 1; i<=(Field.x) + 1; i++)
+            {
+                for (int j = (Field.y) - 1; j <= (Field.y) + 1; j++)
+                {
+                    if (!(punkty.Exists(element => element.x.Equals(i) && element.y.Equals(j))))
+                    {
+                        Field.explored = 1;//to pole należy zbadać
+                        return;
+                    }
+                }
+            }
+            Field.explored = 2;//pole zostało zbadane
+        }
+
+        /*
+         * Procedura inicjalizująca proces podążania do najbliższego niezbadanego jeszcze punktu
+         */
+        private static int[] FindClosestUnknown()
+        {
+            int distance = 10000;
+            int closestX = positionX;
+            int closestY = positionY;
+            int tempDistance;
+            foreach (MapPoint pole in punkty)
+            {
+                checkNeightbours(pole);
+                if (pole.explored == 1)
+                {
+                    tempDistance = Math.Abs(pole.x - positionX) + Math.Abs(pole.y - positionY);
+                    if ((tempDistance < distance))
+                    {
+                        closestX = pole.x;
+                        closestY = pole.y;
+                        distance = tempDistance;
+                    }
+                }
+            }
+            return new int[] { closestX, closestY };
+        }
+
+        #endregion
 
         #region FindAndGetEnergyFromMap
 
