@@ -46,7 +46,7 @@ namespace CsClient
             String ktory = Console.ReadLine();
             int liczba = Int32.Parse(ktory);
 
-            punkty.Add(new MapPoint(0, 0, true, 0, false, 0));
+            punkty.Add(new MapPoint(0, 0, true, 0, false, 0, 2));
             while (true)
             {
                 agentTomek = new AgentAPI(Listen);
@@ -584,11 +584,11 @@ namespace CsClient
 
                 if (pole.energy == 0)
                 {
-                    punkty.Add(new MapPoint(positionX + positionX_Plus, positionY + positionY_Plus, false, pole.height, pole.obstacle, pole.energy));
+                    punkty.Add(new MapPoint(positionX + positionX_Plus, positionY + positionY_Plus, false, pole.height, pole.obstacle, pole.energy, 1));
                 }
                 else
                 {
-                    punkty.Insert(0, new MapPoint(positionX + positionX_Plus, positionY + positionY_Plus, false, pole.height, pole.obstacle, pole.energy));
+                    punkty.Insert(0, new MapPoint(positionX + positionX_Plus, positionY + positionY_Plus, false, pole.height, pole.obstacle, pole.energy, 1));
                 }
             }
             else
@@ -631,7 +631,7 @@ namespace CsClient
                 if (pole.agent != null)
                     Console.WriteLine("Agent " + pole.agent.fullName + " i jest obrocony na " + pole.agent.direction.ToString());
 
-                //  punkty.Add(new MapPoint(pole.x, pole.y, false, pole.height, pole.obstacle, pole.energy));
+                //  punkty.Add(new MapPoint(pole.x, pole.y, false, pole.height, pole.obstacle, pole.energy, 1));
                 Console.WriteLine("Znam juz " + punkty.Count + " punktow");
 
                 Console.WriteLine("-----------------------------");
@@ -738,7 +738,7 @@ namespace CsClient
             bool naliscie;
             naliscie = punkty.Exists(punkt => punkt.x.Equals(positionX) && punkt.y.Equals(positionY));
             if (!naliscie)
-                punkty.Add(new MapPoint(positionX, positionY, true, 0, false, 0));
+                punkty.Add(new MapPoint(positionX, positionY, true, 0, false, 0, 1));
             else
             {
                 
