@@ -10,8 +10,8 @@ namespace CsClient
 
     class DoAIML
     {
-        public String nazwa = "";
         cBot mybot = new cBot(false);
+        public String nazwa = "";
         public DoAIML(String nazwa)
         {
             this.nazwa = nazwa;
@@ -43,7 +43,7 @@ namespace CsClient
             
             zapis.Close();
             cAIMLLoader load = new cAIMLLoader(mybot.GraphMaster);
-            load.loadAIML(@".\aiml\");
+            load.loadAIML(@".\aiml\\");
             mybot = new cBot(false);
         }
     }

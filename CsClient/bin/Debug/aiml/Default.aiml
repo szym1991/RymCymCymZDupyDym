@@ -115,4 +115,28 @@
 <pattern>jak masz na imie</pattern>
 <template>Jabluszko</template>
 </category>
+<category>
+<pattern>jak masz na imie</pattern>
+<template>ddd</template>
+</category>
+<category>
+<pattern>jak masz na imie</pattern>
+<template>du</template>
+</category>
+<category>
+<pattern>jak masz na imie</pattern>
+<template>ss</template>
+</category>
+<category>
+<pattern>jak masz na imie</pattern>
+<template>dd</template>
+</category>
+<category>
+<pattern>jak masz na imie</pattern>
+<template>s</template>
+</category>
+<category>
+<pattern>jak masz na imie</pattern>
+<template>dupa</template>
+</category>
 </aiml>

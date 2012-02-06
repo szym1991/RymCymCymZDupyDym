@@ -46,12 +46,6 @@ namespace CsClient
             String ktory = Console.ReadLine();
             int liczba = Int32.Parse(ktory);
 
-            string fileName = "Default.aiml";
-            string sourcePath = @".\aiml\schemat\";
-            string targetPath = @".\aiml\";
-
-
-
             punkty.Add(new MapPoint(0, 0, true, 0, false, 0));
             while (true)
             {
@@ -73,15 +67,17 @@ namespace CsClient
                 Console.Write("Podaj imie: ");
                 imie = Console.ReadLine();
 
-                if(File.Exists("aiml\\" + imie + ".aiml"))
+                string fileName = "Default.aiml";
+                string sourcePath = @".\aiml\schemat\";
+                string targetPath = @".\aiml\";
+                if (File.Exists("aiml\\" + imie + ".aiml"))
                     File.Delete("aiml\\" + imie + ".aiml");
                 string sourceFile = System.IO.Path.Combine(sourcePath, fileName);
                 string destFile = System.IO.Path.Combine(targetPath, imie + ".aiml");
                 File.Copy(sourceFile, destFile);
                 DoAIML aiml = new DoAIML(imie + ".aiml");
                 aiml.zapis("imie", imie);
-
-
+                myBot = new cBot(false);
                 try
                 {
                     cennikSwiata = agentTomek.Connect(ip, 6008, groupname, grouppass, worldname, imie);
