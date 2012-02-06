@@ -46,7 +46,7 @@ namespace CsClient
             String ktory = Console.ReadLine();
             int liczba = Int32.Parse(ktory);
 
-            punkty.Add(new MapPoint(0, 0, true, 0, false, 0));
+            punkty.Add(new MapPoint(0, 0, true, 0, false, 0, 2));
             while (true)
             {
                 agentTomek = new AgentAPI(Listen);
@@ -245,6 +245,55 @@ namespace CsClient
                 }
             }
         }
+        
+        #region Exploration
+
+        /*
+         * Sprawdza czy dla danego pola wszyscy sąsiedzi zostali już zbadani
+         */
+        private static void checkNeightbours(MapPoint Field)
+        {
+            for(int i = (Field.x) - 1; i<=(Field.x) + 1; i++)
+            {
+                for (int j = (Field.y) - 1; j <= (Field.y) + 1; j++)
+                {
+                    if (!(punkty.Exists(element => element.x.Equals(i) && element.y.Equals(j))))
+                    {
+                        Field.explored = 1;//to pole należy zbadać
+                        return;
+                    }
+                }
+            }
+            Field.explored = 2;//pole zostało zbadane
+        }
+
+        /*
+         * Procedura inicjalizująca proces podążania do najbliższego niezbadanego jeszcze punktu
+         */
+        private static int[] FindClosestUnknown()
+        {
+            int distance = 10000;
+            int closestX = positionX;
+            int closestY = positionY;
+            int tempDistance;
+            foreach (MapPoint pole in punkty)
+            {
+                checkNeightbours(pole);
+                if (pole.explored == 1)
+                {
+                    tempDistance = Math.Abs(pole.x - positionX) + Math.Abs(pole.y - positionY);
+                    if ((tempDistance < distance))
+                    {
+                        closestX = pole.x;
+                        closestY = pole.y;
+                        distance = tempDistance;
+                    }
+                }
+            }
+            return new int[] { closestX, closestY };
+        }
+
+        #endregion
 
         #region FindAndGetEnergyFromMap
 
@@ -535,11 +584,11 @@ namespace CsClient
 
                 if (pole.energy == 0)
                 {
-                    punkty.Add(new MapPoint(positionX + positionX_Plus, positionY + positionY_Plus, false, pole.height, pole.obstacle, pole.energy));
+                    punkty.Add(new MapPoint(positionX + positionX_Plus, positionY + positionY_Plus, false, pole.height, pole.obstacle, pole.energy, 1));
                 }
                 else
                 {
-                    punkty.Insert(0, new MapPoint(positionX + positionX_Plus, positionY + positionY_Plus, false, pole.height, pole.obstacle, pole.energy));
+                    punkty.Insert(0, new MapPoint(positionX + positionX_Plus, positionY + positionY_Plus, false, pole.height, pole.obstacle, pole.energy, 1));
                 }
             }
             else
@@ -582,7 +631,7 @@ namespace CsClient
                 if (pole.agent != null)
                     Console.WriteLine("Agent " + pole.agent.fullName + " i jest obrocony na " + pole.agent.direction.ToString());
 
-                //  punkty.Add(new MapPoint(pole.x, pole.y, false, pole.height, pole.obstacle, pole.energy));
+                //  punkty.Add(new MapPoint(pole.x, pole.y, false, pole.height, pole.obstacle, pole.energy, 1));
                 Console.WriteLine("Znam juz " + punkty.Count + " punktow");
 
                 Console.WriteLine("-----------------------------");
@@ -689,7 +738,7 @@ namespace CsClient
             bool naliscie;
             naliscie = punkty.Exists(punkt => punkt.x.Equals(positionX) && punkt.y.Equals(positionY));
             if (!naliscie)
-                punkty.Add(new MapPoint(positionX, positionY, true, 0, false, 0));
+                punkty.Add(new MapPoint(positionX, positionY, true, 0, false, 0, 1));
             else
             {
                 
