@@ -520,10 +520,33 @@ namespace CsClient
             
         }
 
+        private static void SavingInfoToMap(int positionX_Plus, int positionY_Plus, OrientedField pole)
+        {
+            jestXY = punkty.Exists(element => element.x.Equals(positionX + positionX_Plus) && element.y.Equals(positionY + positionY_Plus));
+            if (!jestXY)
+            {
+
+                if (pole.energy == 0)
+                {
+                    punkty.Add(new MapPoint(positionX + positionX_Plus, positionY + positionY_Plus, false, pole.height, pole.obstacle, pole.energy));
+                }
+                else
+                {
+                    punkty.Insert(0, new MapPoint(positionX + positionX_Plus, positionY + positionY_Plus, false, pole.height, pole.obstacle, pole.energy));
+                }
+            }
+            else
+            {
+                MapPoint punktTestowany = punkty.Find(element => element.x.Equals(positionX + positionX_Plus) && element.y.Equals(positionY + positionY_Plus));
+                punktTestowany.energy = pole.energy;
+            }
+        }
+
         private static void Look()
         {
             OrientedField[] pola = agentTomek.Look();
-            
+
+
             foreach (OrientedField pole in pola)
             {
                 /*Wyświetlanie co chwilę wszystkch zobaczonych pól. Niepotrzebny Spam
@@ -565,69 +588,18 @@ namespace CsClient
                 {
 
                     case 0:
-                        /*    map[positionX + pole.x, positionY + pole.y].known = true;
-                            map[positionX + pole.x, positionY + pole.y].height = pole.height;
-                            map[positionX + pole.x, positionY + pole.y].obstacle = pole.obstacle;
-                            map[positionX + pole.x, positionY + pole.y].energy = pole.energy;*/
-                        jestXY = punkty.Exists(element => element.x.Equals(positionX + pole.x) && element.y.Equals(positionY + pole.y));
-                        if (!jestXY)
-                        {
-
-                            if (pole.energy == 0)
-                            {
-                                punkty.Add(new MapPoint(positionX + pole.x, positionY + pole.y, false, pole.height, pole.obstacle, pole.energy));
-                            }
-                            else
-                            {
-                                punkty.Insert(0, new MapPoint(positionX + pole.x, positionY + pole.y, false, pole.height, pole.obstacle, pole.energy));
-                            }
-                        }
+                        SavingInfoToMap(pole.x, pole.y, pole);
                         break;
-                    case 1:                          
-                        jestXY = punkty.Exists(element => element.x.Equals(positionX + pole.y) && element.y.Equals(positionY - pole.x));
-
-                        if (!jestXY)
-                        {
-                            if (pole.energy == 0)
-                            {
-                                punkty.Add(new MapPoint(positionX + pole.y, positionY - pole.x, false, pole.height, pole.obstacle, pole.energy));
-                            }
-                            else
-                            {
-                                punkty.Insert(0, new MapPoint(positionX + pole.y, positionY - pole.x, false, pole.height, pole.obstacle, pole.energy));
-                            }
-                        }
+                    case 1:
+                        SavingInfoToMap(pole.y, -pole.x, pole);
                         break;
                     case 2:
-                        jestXY = punkty.Exists(element => element.x.Equals(positionX - pole.x) && element.y.Equals(positionY - pole.y));
-                        if (!jestXY)
-                        {
-                            if (pole.energy == 0)
-                            {
-                                punkty.Add(new MapPoint(positionX - pole.x, positionY - pole.y, false, pole.height, pole.obstacle, pole.energy));
-                            }
-                            else
-                            {
-                                punkty.Insert(0, new MapPoint(positionX - pole.x, positionY - pole.y, false, pole.height, pole.obstacle, pole.energy));
-                            }
-                        }
+                        SavingInfoToMap(-pole.x, -pole.y, pole);
                         break;
                     case 3:
-                      jestXY = punkty.Exists(element => element.x.Equals(positionX - pole.y) && element.y.Equals(positionY + pole.x));
-                        if (!jestXY) {
-                            if (pole.energy == 0)
-                            {
-                                punkty.Add(new MapPoint(positionX - pole.y, positionY + pole.x, false, pole.height, pole.obstacle, pole.energy));
-                            }
-                            else
-                            {
-                                punkty.Insert(0, new MapPoint(positionX - pole.y, positionY + pole.x, false, pole.height, pole.obstacle, pole.energy));
-                            }
-                         }   
+                        SavingInfoToMap(-pole.y, pole.x, pole);
                         break;
                 }
-
-
             }
                 #endregion
         }
