@@ -165,7 +165,7 @@ namespace CsClient
          */
         private static void Running()
         {
-            while (true)
+            while (!Console.KeyAvailable)
             {
                 Random rnd = new Random();
                 int v = 0, start = 0, end = 3;
