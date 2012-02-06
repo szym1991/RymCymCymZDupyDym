@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="ISO-8859-1"?> 
+<aiml version="1.0.1" xmlns="http://alicebot.org/2001/AIML-1.0.1"
+      xmlns:html="http://www.w3.org/1999/xhtml"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://alicebot.org/2001/AIML-1.0.1 http://aitools.org/aiml/schema/AIML.xsd">
+<set name="nazwa">MisioKargul</set>
+<category>
+	<pattern>Czesc</pattern>
+	<template>Dzien dobry.Jak masz na <set name="topic">imie</set>?</template>
+</category>
+	<category>
+		<pattern>Witam</pattern>
+		<template><srai>Czesc</srai></template>
+	</category>
+	<category>
+		<pattern>Dzien dobry</pattern>
+		<template><srai>Czesc></srai></template>
+	</category>
+	<category>
+		<pattern>Hej</pattern>
+		<template><srai>Czesc</srai></template>
+	</category>
+<topic name="imie">
+	<category>
+		<pattern>*</pattern>
+		<template>Milo mi <star/>. Nazywam sie <get name="nazwa"/>.</template>
+	</category>
+	<category>
+		<pattern>Ile masz energii?</pattern>
+		<template>Mam energii <get name="energia"/>. A Ty?</template>
+	</category>
+	<category>
+		<pattern>Duzo masz energii?</pattern>
+		<that>A Ty?</that>
+		<template><srai>Ile masz energii?</srai></template>
+	</category>
+	<category>
+		<pattern>Masz duzo energii?</pattern>
+		<that>A Ty?</that>
+		<template><srai>Ile masz energii?</srai></template>
+	</category>
+	<category>
+		<pattern>Jaki jest zapas Twojej energii?</pattern>
+		<that>A Ty?</that>
+		<template><srai>Ile masz energii?</srai></template>
+	</category>
+	<category>
+		<pattern>*</pattern>
+		<that>A Ty?</that>
+		<template>To ladnie.</template>
+	</category>
+	<category>
+		<pattern>* Widziales gdzies zrodla energii?</pattern>
+		<template>Tak widzialem.</template>
+	</category>
+	<category>
+		<pattern>Zauwazyles gdzies zrodla energii?</pattern>
+		<template><srai>Widziales gdzies zrodla energii?</srai></template>
+	</category>
+	<category>
+		<pattern>A gdzie?</pattern>
+		<that>Tak widzialem.</that>
+		<template><random>
+      <li> Nie powiem </li>
+      <li> W dupie:d </li>
+      <li> Daleko stąd </li>
+      <li> <get name="zrodlo"/> </li>
+   </random></template>
+	</category>
+	<category>
+		<pattern>* Gdzie warto pojsc?</pattern>
+		<template><random>
+      <li> Nie powiem </li>
+      <li> Za zachod</li>
+      <li> Daleko stąd </li>
+      <li> <get name="zrodlo"/> </li>
+   </random></template>
+   </category>
+   <category>
+		<pattern>Sa jakies ciekawe miejsca?</pattern>
+		<template><random>
+      <li> Nie powiem </li>
+      <li> Za zachod</li>
+      <li> Daleko stąd </li>
+      <li> <get name="zrodlo"/> </li>
+   </random></template>
+	</category>
+    
+<category>
+	<pattern>Dzien dobry.Jak masz na imie?</pattern>
+	<template><set name="topic"><get name="nazwa"/></set></template>
+</category>
+<topic name=<get name="nazwa"/>>
+<category>
+		<pattern>*</pattern>
+		<template>Ile masz energii?</template>
+	</category>
+	<category>
+		<pattern>*</pattern>
+		<template>A ja mam energii <get name="energia2"\>. Widziales gdzies zrodla energii?</template>
+	</category>
+	<category>
+		<pattern>Tak widzialem.</pattern>
+		<template>A gdzie?</template>
+	</category>
+	<category>
+		<pattern>*</pattern>
+		<that>A gdzie></that>
+		<template>To dzieki. To ciesze sie. Gdzie warto pojsc?</template>
+	</category>
+	<category>
+		<pattern>*</pattern>
+		<that>Gdzie warto pojsc></that>
+		<template><random>
+      <li> Dziekuje. Pa </li>
+      <li> Dziekuje. Dowidzenia </li>
+      <li> Dziekuje. Papatki </li>
+      <li> Dziekuje. Musze isc </li>
+   </random></template>
+	</category>
+	
+</topic>
+<category>
+<pattern>* Pa</pattern><template><random>
+      <li> Pa. </li>
+      <li> Dowidzenia. </li>
+      <li> Papatki </li>
+      <li> Do zobaczenia. </li>
+   </random></template> 
+</category>
+<category>
+<pattern>* Musze isc</pattern><template><random>
+      <li> Pa. </li>
+      <li> Dowidzenia. </li>
+      <li> Papatki </li>
+      <li> Do zobaczenia. </li>
+   </random></template> 
+</category>
+<category>
+<pattern>* Dowidzenia</pattern><template><random>
+      <li> Pa. </li>
+      <li> Dowidzenia. </li>
+      <li> Papatki </li>
+      <li> Do zobaczenia. </li>
+   </random></template> 
+</category>
+<category>
+<pattern>*Papatki</pattern><template><random>
+      <li> Pa. </li>
+      <li> Dowidzenia. </li>
+      <li> Papatki </li>
+      <li> Do zobaczenia. </li>
+   </random></template> 
+</category>
+
+</aiml>
+
+
+
