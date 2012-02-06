@@ -116,7 +116,6 @@ namespace CsClient
             while (loop)
             {
                 Console.WriteLine("Moja energia: " + energy);
-                energiaDoAIML();
                 switch (Console.ReadKey().Key)
                 {
                     case ConsoleKey.Spacebar: Look();
@@ -167,6 +166,7 @@ namespace CsClient
         {
             while (!Console.KeyAvailable)
             {
+                energiaDoAIML();
                 Random rnd = new Random();
                 int v = 0, start = 0, end = 3;
                 v = rnd.Next(start, end);
@@ -215,6 +215,8 @@ namespace CsClient
                         distance = tempDistance;
                     }
                 }
+                if (pole.agent != null)
+                    agentTomek.Speak("jak masz na imie", 1);
             }
             //Console.Write("Zauwazylem zrodlo energii w"+x+","+y);
             
