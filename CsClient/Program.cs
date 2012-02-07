@@ -20,7 +20,10 @@ namespace CsClient
         static bool jestXY = false;
         static List<Wiadomosc> wiadomosci = new List<Wiadomosc>();
         static int maxValueX = 0, minValueX = 0, maxValueY = 0, minValueY = 0;
-        static int ruchleft, ruchright;
+        static int ruchleft = 0, ruchright = 0;
+
+
+
 
         /*
          * Nowe zmienne dotyczące obecnej pozycji agenta
@@ -209,7 +212,7 @@ namespace CsClient
                 /*
                  * Gdy agent stwierdzi, że poziom energii jest krytyczny, to udaje się do najbliższego znanego mu źródła energii. Zakomentowane do momentu poprawienia metody odpowiedzialnej za rekurencyjne podążanie do punktu.
                  */
-                if (energy < 250)
+                if (energy < Convert.ToInt32((cennikSwiata.initialEnergy / 2)))
                 {
                     goToPoint(FindEnergy());
                 }
@@ -223,12 +226,16 @@ namespace CsClient
         private static void SearchingEnergy()
         {
             OrientedField[] pola = agentTomek.Look();
+            Random rdn2 = new Random();
+
+            int v2 = 0, st = 0, ed = 50;
             int x = 0;
             int y = 0;
             int distance = 10000;
             int tempDistance;
             foreach (OrientedField pole in pola)
             {
+
                 if (pole.energy != 0)
                 {
                     tempDistance = Math.Abs(pole.x - positionX) + Math.Abs(pole.y - positionY);
@@ -240,7 +247,19 @@ namespace CsClient
                     }
                 }
                 if (pole.agent != null)
+                {
                     agentTomek.Speak("jak masz na imie", 1);
+                    autoOdpowiedz();
+                }
+            }
+
+            if (distance == 10000)
+            {
+                v2 = rdn2.Next(st, ed);
+                if (v2 == 15 || v2 == 30)
+                    RotateLeft();
+                else if (v2 == 25 || v2 == 48)
+                    RotateRight();
             }
             //Console.Write("Zauwazylem zrodlo energii w"+x+","+y);
 
@@ -512,8 +531,22 @@ namespace CsClient
         private static void Recharge()
         {
             int added = agentTomek.Recharge();
+
+            if (energy + added >= cennikSwiata.initialEnergy)
+            {
+                int roznica = cennikSwiata.initialEnergy - energy;
+                energy = cennikSwiata.initialEnergy;
+                Console.WriteLine("Otrzymano " + roznica + " energii");
+            }
+            else
+            {
+                energy += added;
+                Console.WriteLine("Otrzymano " + added + " energii");
+            }
+
             energy += added;
             Console.WriteLine("Otrzymano " + added + " energii");
+
 
         }
 
@@ -537,6 +570,9 @@ namespace CsClient
                  * uaktualnianie obrotu agenta na mapie
                  */
                 rotation = (rotation + 3) % 4;
+                Recharge();
+                Recharge();
+                Recharge();
             }
             Console.WriteLine("Moj obrot to " + rotation);
 
@@ -553,6 +589,9 @@ namespace CsClient
                  * uaktualnianie obrotu agenta na mapie
                  */
                 rotation = (++rotation) % 4;
+                Recharge();
+                Recharge();
+                Recharge();
 
             }
             Console.WriteLine("Moj obrot to " + rotation);
